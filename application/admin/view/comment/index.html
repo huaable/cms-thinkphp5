@@ -1,0 +1,51 @@
+{include file="common/head"/}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+
+            <ol class="breadcrumb">
+                <li><a href="{:url('index')}">评论管理</a></li>
+                <li class="active">列表</li>
+            </ol>
+
+
+            <hr/>
+
+            <!-- Table -->
+            <table class="table table-striped table-bordered ">
+
+                <tr>
+                    <th width="70" class="text-center">ID</th>
+                    <th width="">文章</th>
+                    <th width="100">用户</th>
+                    <th width="500">评论内容</th>
+                    <th width="100">新增时间</th>
+                    <th width="120">操作</th>
+                </tr>
+
+                {foreach name="lists" item="item"}
+                <tr>
+                    <td class="text-center"> {$item.id}</td>
+                    <td> {$item.article_id} # {:model('Article')->showArticleTitle($item.article_id)}</td>
+                    <td> {$item.user_id} # {:model('User')->showUsername($item.user_id)}</td>
+                    <td>{$item.content}</td>
+                    <td class="text-muted small"> {:date($item.create_time)}</td>
+                    <td>
+                        <a href="{:url('delete',['id'=>$item.id])}" class="btn btn-danger btn-sm"
+                           onclick="return confirm('确定删除吗？')">删除</a>
+                    </td>
+                </tr>
+                {/foreach}
+
+            </table>
+
+            <nav aria-label="Page navigation">
+                {$page}
+            </nav>
+
+        </div>
+
+    </div>
+</div>
+{include file="common/foot"/}

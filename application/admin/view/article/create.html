@@ -1,0 +1,234 @@
+{include file="common/head"/}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ol class="breadcrumb">
+                <li><a href="{:url('index')}">文章管理</a></li>
+                <li class="active">新增文章</li>
+            </ol>
+
+            <hr/>
+
+            <form action="{:url('create')}" method="post">
+                <div class="form-group">
+                    <label for="Model_category_id">分类</label>
+                    <select class="form-control" name="Model[category_id]" id="Model_category_id">
+                        {foreach name="category_list" item="item"}
+                        <option value="{$item.id}">{$item.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Model_title">标题</label>
+                    <input type="text" class="form-control" id="Model_title" name="Model[title]" placeholder="标题">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="Model_title">封面</label>
+                    <!--封面-->
+                    <input type="hidden" class="form-control" id="Model_thumb" name="Model[thumb]">
+
+                    <!--dom结构部分-->
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker">选择图片</div>
+
+                    </div>
+                    <div id="img_list"></div>
+
+                </div>
+
+                <div class="form-group">
+                    <label>正文</label>
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                              data-toggle="tab">编辑器</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">HTML源码</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="home">
+                        <p></p>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="video_url" placeholder="视频地址">
+                            <div class="input-group-addon"><a href="javascript:addVideo();">插入视频</a></div>
+                        </div>
+                        <p></p>
+
+                        <div id="toolbar"></div>
+                        <div id="editor" style="min-height: 500px;border: 1px solid #CCC"></div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <p></p>
+                        <!-- 富文本编辑器 -->
+                        <textarea rows="30" class="form-control" id="Model_content"
+                                  name="Model[content]"></textarea>
+                    </div>
+                </div>
+
+    </div>
+
+
+    <button type="submit" class="btn btn-default">提交</button>
+    </form>
+
+</div>
+
+</div>
+</div>
+<!-- 上传封面插件 http://fex.baidu.com/webuploader/getting-started.html-->
+
+<!--引入CSS-->
+<link rel="stylesheet" type="text/css" href="__STATIC__/admin/lib/webuploader-0.1.5/dist/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="__STATIC__/admin/lib/webuploader-0.1.5/dist/webuploader.js"></script>
+
+<!--SWF在初始化的时候指定，在后面将展示-->
+<script>
+
+	var BASE_URL = "{:url('/')}";
+	// 初始化Web Uploader
+	var uploader = WebUploader.create({
+
+		// 选完文件后，是否自动上传。
+		auto: true,
+
+		// swf文件路径
+		swf: BASE_URL + '/js/Uploader.swf',
+
+		// 文件接收服务端。
+		server: "{:url('Uploader/uploader?dir=article')}",
+
+		// 选择文件的按钮。可选。
+		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
+		pick: '#filePicker',
+
+		// 只允许选择图片文件。
+		accept: {
+			title: 'Images',
+			extensions: 'gif,jpg,jpeg,bmp,png',
+			mimeTypes: 'image/*'
+		}
+	});
+
+	// 当有文件添加进来的时候
+	uploader.on('fileQueued', function (file) {
+		var $li = $(
+				'<div id="' + file.id + '" class="file-item thumbnail">' +
+				'<img>' +
+				'<div class="info">' + file.name + '</div>' +
+				'</div>'
+			),
+			$img = $li.find('img');
+
+
+		var $list = $("#img_list");
+		// $list为容器jQuery实例
+		$list.html($li);
+
+		// 创建缩略图
+		// 如果为非图片文件，可以不用调用此方法。
+		// thumbnailWidth x thumbnailHeight 为 100 x 100
+		uploader.makeThumb(file, function (error, src) {
+			if (error) {
+				$img.replaceWith('<span>不能预览</span>');
+				return;
+			}
+
+			$img.attr('src', src);
+		}, 1, 1);
+	});
+
+	// 文件上传过程中创建进度条实时显示。
+	uploader.on('uploadProgress', function (file, percentage) {
+		var $li = $('#' + file.id),
+			$percent = $li.find('.progress span');
+
+		// 避免重复创建
+		if (!$percent.length) {
+			$percent = $('<p class="progress"><span></span></p>')
+				.appendTo($li)
+				.find('span');
+		}
+
+		$percent.css('width', percentage * 100 + '%');
+	});
+
+	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+	uploader.on('uploadSuccess', function (file, resp) {
+		$('#' + file.id).addClass('upload-state-done');
+		$("#Model_thumb").val(resp.data[0]);
+
+	});
+
+	// 文件上传失败，显示上传出错。
+	uploader.on('uploadError', function (file) {
+		var $li = $('#' + file.id),
+			$error = $li.find('div.error');
+
+		// 避免重复创建
+		if (!$error.length) {
+			$error = $('<div class="error"></div>').appendTo($li);
+		}
+
+		$error.text('上传失败');
+	});
+
+	// 完成上传完了，成功或者失败，先删除进度条。
+	uploader.on('uploadComplete', function (file) {
+		$('#' + file.id).find('.progress').remove();
+	});
+
+</script>
+
+
+<!-- 引用js -->
+<script type="text/javascript" src="__STATIC__/admin/lib/wangEditor-3.0.15/release/wangEditor.js"></script>
+<script type="text/javascript">
+
+	//    富文本编辑器
+	var E = window.wangEditor;
+	var editor = new E('#toolbar','#editor');
+
+	$text1 = $("#Model_content");
+	// 图片上传配置服务器端地址
+	editor.customConfig.uploadImgServer = "{:url('Uploader/uploader?dir=article')}";
+	editor.customConfig.uploadFileName = 'file[]';
+	editor.customConfig.uploadImgShowBase64 = true;
+	// 隐藏掉插入网络图片功能。该配置，只有在你正确配置了图片上传功能之后才可用。
+	//	editor.customConfig.customUploadImg = function (files, insert) {
+	//		console.log(files);
+	//		insert('https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png')
+	//	}
+
+	editor.customConfig.onchange = function (html) {
+		// 监控变化，同步更新到 textarea
+		$text1.val(html)
+	};
+
+	editor.create();
+
+
+	//-------------
+
+	//    插入视频代码
+	function addVideo() {
+		var src = $("#video_url").val();
+		editor.cmd.do('insertHTML', '<video width="100%" controls="controls" src="' + src + '"></video>')
+	}
+
+	//源码编辑
+	$text1.on("change keyup", function () {
+		editor.$textElem.html($(this).val());
+	})
+</script>
+{include file="common/foot"/}
+<!---->

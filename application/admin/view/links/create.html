@@ -1,0 +1,166 @@
+{include file="common/head"/}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ol class="breadcrumb">
+                <li><a href="{:url('index')}">管理</a></li>
+                <li class="active">新增</li>
+            </ol>
+
+            <hr/>
+
+            <form action="{:url('create')}" method="post">
+
+                <div class="form-group">
+                    <label for="Model_name">名称</label>
+                    <input type="text" class="form-control" id="Model_name" name="Model[name]" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="Model_description">描述</label>
+                    <input type="text" class="form-control" id="Model_description" name="Model[description]" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="Model_url">Url</label>
+                    <input type="url" class="form-control" id="Model_url" name="Model[url]" placeholder="">
+                </div>
+
+                <div class="form-group">
+                    <label for="Model_weight">权重</label>
+                    <input type="number" class="form-control" id="Model_weight" name="Model[weight]" placeholder="">
+                    <p class="help-block">权重越大，排名越靠前数字,如:1</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="Model_logo">Logo</label>
+                    <!--封面-->
+                    <input type="hidden" class="form-control" id="Model_logo" name="Model[logo]">
+
+                    <!--dom结构部分-->
+                    <div id="uploader-demo">
+                        <!--用来存放item-->
+                        <div id="fileList" class="uploader-list"></div>
+                        <div id="filePicker">选择图片</div>
+
+                    </div>
+                    <div id="img_list"></div>
+
+                </div>
+
+
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+<!-- 上传封面插件 http://fex.baidu.com/webuploader/getting-started.html-->
+
+<!--引入CSS-->
+<link rel="stylesheet" type="text/css" href="__STATIC__/admin/lib/webuploader-0.1.5/dist/webuploader.css">
+
+<!--引入JS-->
+<script type="text/javascript" src="__STATIC__/admin/lib/webuploader-0.1.5/dist/webuploader.js"></script>
+
+<!--SWF在初始化的时候指定，在后面将展示-->
+<script>
+
+	var BASE_URL = "{:url('/')}";
+	// 初始化Web Uploader
+	var uploader = WebUploader.create({
+
+		// 选完文件后，是否自动上传。
+		auto: true,
+
+		// swf文件路径
+		swf: BASE_URL + '/js/Uploader.swf',
+
+		// 文件接收服务端。
+		server: "{:url('Uploader/uploader?dir=website')}",
+
+		// 选择文件的按钮。可选。
+		// 内部根据当前运行是创建，可能是input元素，也可能是flash.
+		pick: '#filePicker',
+
+		// 只允许选择图片文件。
+		accept: {
+			title: 'Images',
+			extensions: 'gif,jpg,jpeg,bmp,png',
+			mimeTypes: 'image/*'
+		}
+	});
+
+	// 当有文件添加进来的时候
+	uploader.on('fileQueued', function (file) {
+		var $li = $(
+				'<div id="' + file.id + '" class="file-item thumbnail">' +
+				'<img>' +
+				'<div class="info">' + file.name + '</div>' +
+				'</div>'
+			),
+			$img = $li.find('img');
+
+
+		var $list = $("#img_list");
+		// $list为容器jQuery实例
+		$list.html($li);
+
+		// 创建缩略图
+		// 如果为非图片文件，可以不用调用此方法。
+		// thumbnailWidth x thumbnailHeight 为 100 x 100
+		uploader.makeThumb(file, function (error, src) {
+			if (error) {
+				$img.replaceWith('<span>不能预览</span>');
+				return;
+			}
+
+			$img.attr('src', src);
+		}, 1, 1);
+	});
+
+	// 文件上传过程中创建进度条实时显示。
+	uploader.on('uploadProgress', function (file, percentage) {
+		var $li = $('#' + file.id),
+			$percent = $li.find('.progress span');
+
+		// 避免重复创建
+		if (!$percent.length) {
+			$percent = $('<p class="progress"><span></span></p>')
+				.appendTo($li)
+				.find('span');
+		}
+
+		$percent.css('width', percentage * 100 + '%');
+	});
+
+	// 文件上传成功，给item添加成功class, 用样式标记上传成功。
+	uploader.on('uploadSuccess', function (file, resp) {
+		$('#' + file.id).addClass('upload-state-done');
+		$("#Model_logo").val(resp.data[0]);
+
+	});
+
+	// 文件上传失败，显示上传出错。
+	uploader.on('uploadError', function (file) {
+		var $li = $('#' + file.id),
+			$error = $li.find('div.error');
+
+		// 避免重复创建
+		if (!$error.length) {
+			$error = $('<div class="error"></div>').appendTo($li);
+		}
+
+		$error.text('上传失败');
+	});
+
+	// 完成上传完了，成功或者失败，先删除进度条。
+	uploader.on('uploadComplete', function (file) {
+		$('#' + file.id).find('.progress').remove();
+	});
+
+</script>
+
+{include file="common/foot"/}

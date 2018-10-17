@@ -1,0 +1,91 @@
+{include file="common/head"/}
+
+
+<div class="tp-block container">
+
+
+    <div class="row">
+        <div class="nav-guide ">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <ul class="nav-group">
+                    <li class=" channel {:input('param.category_id')==''?'active':''}"><a class=""
+                                                                                          href="{:url('/index/category',['w'=>''])}">全部</a>
+                    </li>
+                    {foreach name="category_list" item="item"}
+                    <li class="channel {:input('param.category_id')==$item.id?'active':''}"><a
+                            href="{:url('/index/category',['category_id'=>$item.id])}">{$item.name}</a></li>
+                    {/foreach}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="hr20"></div>
+    </div>
+
+    <div class="row">
+        <form action="" method="get" target="_self" class=" col-sm-8">
+            <div class="input-group">
+                <input type="hidden" name="category_id" class="form-control" placeholder=""
+                       value="{:input('param.category_id')}">
+                <input type="text" name="w" class="form-control" placeholder="" value="{:input('param.w')}">
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">搜索一下</button>
+                </div>
+            </div><!-- /input-group -->
+        </form>
+    </div>
+    <div class="h20"></div>
+    <div class="row">
+
+        <style>
+
+
+        </style>
+
+        <div class="col-sm-8">
+
+            <div class="cms-list">
+
+                <ul>
+                    {foreach name="lists" item="item"}
+
+                    <li>
+                        <div class="sub-pic"><a title="{$item.title}" href="{:url('/index/article',['id'=>$item.id])}">
+                            <img alt="{$item.title}" width="160" height="120"
+                                 src="{:model('common')->getThumbUrl($item.thumb,160,120)}">
+                        </a>
+                        </div>
+                        <div class="sub-detail">
+                            <h4><a title="{$item.title}" href="{:url('/index/article',['id'=>$item.id])}"
+                                   target="_blank">{$item.title}</a>
+                            </h4>
+                            <p class="sub-meta"><span>{:date('Y-m-d',strtotime($item.create_time))}</span> <span>阅读:{$item.read_number}</span>
+                            </p>
+                            <p class="sub-content">{:orange\\Help::cutTextFromHtml($item.content)}</p>
+                        </div>
+                    </li>
+                    {/foreach}
+
+                </ul>
+            </div>
+
+            <hr/>
+
+            <nav aria-label="Page navigation">
+                {$page}
+            </nav>
+        </div>
+        <div class="col-sm-4"></div>
+
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+
+{include file="common/foot"/}

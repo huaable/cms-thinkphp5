@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="__STATIC__/admin/lib/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="__STATIC__/admin/css/admin.css"/>
+</head>
+<body style="padding-top:70px ">
+
+<script src="__STATIC__/admin/lib/jquery-3.2.1.min.js"></script>
+<script src="__STATIC__/admin/lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+
+<nav class="navbar navbar-default navbar-fixed-top" style="z-index: 100000;">
+    <div class="container">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{:url('Index/index')}">
+                <img alt="Brand" width="20" height="20" src="__STATIC__/admin/img/logo.png">
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="{:request()->controller()=='Index'?'active':''}"><a href="{:url('Index/index')}">首页</a></li>
+                <!--<li class="{:request()->controller()=='Menu'?'active':''}"><a href="{:url('Menu/index')}">菜单管理</a></li>-->
+                <!--<li class="{:request()->controller()=='Category'?'active':''}"><a href="{:url('Category/index')}">分类管理</a></li>-->
+                <!--<li class="{:request()->controller()=='Article'?'active':''}"><a href="{:url('Article/index')}">文章管理</a></li>-->
+                <!--<li class="{:request()->controller()=='SearchHistory'?'active':''}"><a href="{:url('SearchHistory/index')}">搜索记录</a></li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">网站信息 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:url('Index/index')}">系统配置</a></li>
+                        <li><a href="{:url('Visitor/index')}">访客记录</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">文章管理 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:url('Category/create')}">新增分类</a></li>
+                        <li><a href="{:url('Category/index')}">分类列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{:url('Article/create')}">新增文章</a></li>
+                        <li><a href="{:url('Article/index')}">文章列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{:url('Comment/index')}">评论管理</a></li>
+                        <li><a href="{:url('SearchHistory/index')}">搜索记录</a></li>
+                    </ul>
+                </li>
+                <!--        <li class="dropdown">
+                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                              aria-expanded="false">分镜管理 <span class="caret"></span></a>
+                           <ul class="dropdown-menu">
+
+                               <li><a href="{:url('Storyboard/create')}">新增分镜</a></li>
+                               <li><a href="{:url('Storyboard/index')}">分镜列表</a></li>
+                               <li role="separator" class="divider"></li>
+                               <li><a href="{:url('StoryboardComment/index')}">评论管理</a></li>
+                               <li><a href="{:url('StoryboardSearch/index')}">搜索记录</a></li>
+                           </ul>
+                       </li>
+                        -->
+                <li class="{:request()->controller()=='User'?'active':''}"><a href="{:url('User/index')}">用户管理</a></li>
+                <li class="{:request()->controller()=='Links'?'active':''}"><a href="{:url('Links/index')}">网站大全</a>
+                </li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a target="_blank" href="/">网站首页</a></li>
+                <li><a href="{:url('Admin/index')}">{$Think.session.admin.username} </a></li>
+                <li><a href="{:url('Index/logout')}">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

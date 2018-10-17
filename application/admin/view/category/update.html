@@ -1,0 +1,38 @@
+@{include file="common/head"/}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <ol class="breadcrumb">
+                <li><a href="{:url('index')}">{$controllerAlias}</a></li>
+                <li class="active">修改</li>
+            </ol>
+
+            <hr/>
+
+            <form action="{:url('update',['id'=>$model.id])}" method="post">
+                <div class="form-group">
+                    <label for="Model_name">名称</label>
+                    <input type="text" class="form-control" id="Model_name" name="Model[name]" placeholder="名称"
+                           value="{$model.name}">
+                </div>
+                <div class="form-group">
+                    <label for="Model_name">状态</label>
+                    <select class="form-control" name="Model[status]" id="Model_status">
+                        <option value="10" {$model.status=="10"?'selected':''}>隐藏</option>
+                        <option value="20" {$model.status=="20"?'selected':''}>显示</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Model_weight">权重</label>
+                    <input type="number" class="form-control" id="Model_weight" name="Model[weight]"
+                           placeholder="数字,如:1" value="{$model.weight}">
+                    <p class="help-block">权重越大，排名越靠前数字,如:1</p>
+
+                </div>
+                <button type="submit" class="btn btn-default">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="common/foot"/}

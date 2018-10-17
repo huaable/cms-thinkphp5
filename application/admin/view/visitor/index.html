@@ -1,0 +1,51 @@
+{include file="common/head"/}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+
+            <ol class="breadcrumb">
+                <li><a href="{:url('index')}">访客记录</a></li>
+                <li class="active">列表</li>
+            </ol>
+
+            <hr/>
+
+            <!-- Table -->
+            <table class="table table-striped table-bordered">
+
+                <tr>
+                    <th width="70" class="text-center">ID</th>
+                    <th>IP</th>
+                    <th>内容</th>
+                    <th width="160">创建时间</th>
+                </tr>
+
+                {foreach name="lists" item="item"}
+                <tr>
+                    <td class="text-center"> {$item.id}</td>
+                    <td>IP:{$item.ip}</td>
+                    <td>
+                            URL: {$item.url}
+                            <br/>
+                            GET: {$item.get}
+                            <br/>
+                            POST: {$item.post}
+                    </td>
+                    <td> {$item.create_time}</td>
+
+                </tr>
+                {/foreach}
+
+            </table>
+
+            <nav aria-label="Page navigation">
+                {$page}
+            </nav>
+
+        </div>
+
+    </div>
+</div>
+{include file="common/foot"/}
+

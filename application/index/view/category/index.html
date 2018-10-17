@@ -1,0 +1,81 @@
+{include file="common/head"/}
+<div class="nav-guide">
+    <div class="container">
+
+        <ul class="nav-group">
+            <li class=" channel {:input('param.category_id')==''?'active':''}"><a class=""
+                                                                                  href="{:url('/index/category',['w'=>''])}">全部</a>
+            </li>
+            {foreach name="category_list" item="item"}
+            <li class="channel {:input('param.category_id')==$item.id?'active':''}"><a
+                    href="{:url('/index/category',['category_id'=>$item.id])}">{$item.name}</a></li>
+            {/foreach}
+        </ul>
+    </div>
+</div>
+<div class="h20"></div>
+
+<div class="tp-block container">
+
+
+    <div class="row">
+
+        <div class="col-sm-8">
+
+            <form class="" action="" method="get" target="_self">
+                <div class="input-group">
+                    <input type="hidden" name="category_id" class="form-control" placeholder=""
+                           value="{:input('param.category_id')}">
+                    <input type="text" name="w" class="x-form-control form-control" placeholder=""
+                           value="{:input('param.w')}">
+                    <div class="input-group-btn">
+                        <button class="x-btn btn " type="submit">搜索一下</button>
+                    </div>
+                </div><!-- /input-group -->
+            </form>
+            <div class="h10"></div>
+
+
+            <div class="h10"></div>
+
+            <div class="cms-list">
+
+                <ul>
+                    {foreach name="lists" item="item"}
+
+                    <li>
+                        <div class="sub-pic"><a title="{$item.title}" href="{:url('/index/article',['id'=>$item.id])}">
+                            <img alt="{$item.title}" width="60" height="60"
+                                 src="{:model('common')->getThumbUrl($item.thumb,60,60)}">
+                        </a>
+                        </div>
+                        <div class="sub-detail">
+                            <h2>
+                                <a href="{:url('/index/category',['category_id'=>$item.category_id])}" class="x-cate">{$item->showCate()}</a>
+                                <a title="{$item.title}" href="{:url('/index/article',['id'=>$item.id])}"
+                                   target="_blank">{$item.title}</a>
+                            </h2>
+                            <p class="sub-meta"><span>{:date('Y-m-d',strtotime($item.create_time))}</span> <span>阅读:{$item.read_number}</span>
+                            </p>
+                        </div>
+                    </li>
+                    {/foreach}
+
+                </ul>
+            </div>
+
+            <hr/>
+
+            <nav class="x-page" aria-label="Page navigation">
+                {$page}
+            </nav>
+        </div>
+        <div class="col-sm-4"></div>
+
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+
+{include file="common/foot"/}

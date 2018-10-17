@@ -1,0 +1,49 @@
+{include file="common/head"/}
+<div class="container">
+    <div class="row">
+
+        <div class="col-sm-4">
+            <h3>注册一个新用户</h3>
+            <hr/>
+            <form action="" method="post">
+                <div class="form-group has-feedback">
+                    <input type="text" name="username" class="form-control" placeholder="用户名" autofocus/>
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="password" class="form-control" placeholder="密码"/>
+                    <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input type="password" name="repassword" class="form-control" placeholder="确认密码"/>
+                    <span class="glyphicon glyphicon-check form-control-feedback"></span>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" name="captcha" class="form-control" placeholder="验证码"/>
+                        <span class="input-group-addon" style="padding: 0">
+                            <img height="30" src="{:captcha_src()}" alt="验证码"
+                                 onClick="this.src=this.src+'?'+Math.random()"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox ">
+                        <label>
+                            <input type="checkbox" name="accept" value="1" checked> 我同意 <a href="#">网站安全协议</a>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">点击注册</button>
+                </div>
+            </form>
+            <hr/>
+            <p>
+                <a href="{:url('/index/login')}" class="text-center">我已经注册了账户,前往登录</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+{include file="common/foot"/}

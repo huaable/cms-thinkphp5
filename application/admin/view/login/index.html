@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="__STATIC__/admin/lib/bootstrap-3.3.7-dist/css/bootstrap.css"/>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img alt="Brand" width="20" height="20" src="__STATIC__/admin/img/logo.png">
+            </a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="page-header text-center">
+        <h1>后台登录
+            <small></small>
+        </h1>
+    </div>
+
+    <form class="form-horizontal" method="post">
+        <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">账号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="inputName" name="admin[username]" placeholder="管理员账户" autofocus>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+            <div class="col-sm-8">
+                <input type="password" class="form-control" id="inputPassword" name="admin[password]"
+                       placeholder="管理员密码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4">
+                <input type="text" name="captcha" placeholder="验证码"
+                       autocomplete="off" class="form-control">
+
+            </div>
+            <div class="col-sm-4">
+                <div class="captcha">
+                    <img src="{:captcha_src()}" alt="captcha"
+                         onclick="this.src=this.src+'?'+'id='+Math.random()"/>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button type="submit" class="btn btn-default btn-block">登录</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="__STATIC__/admin/lib/jquery-3.2.1.min.js"></script>
+<script src="__STATIC__/admin/lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+{include file="common/foot"/}
